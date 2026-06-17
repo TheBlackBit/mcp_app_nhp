@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Autonomous procurement UX — non-human-present agentic commerce</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css" />
+<style>
+  :root{
+    --color-background-primary:#ffffff;
+    --color-background-secondary:#f4f3ee;
+    --color-background-tertiary:#eceae2;
+    --color-background-info:#E6F1FB;
+    --color-background-success:#E1F5EE;
+    --color-background-warning:#FAEEDA;
+    --color-background-danger:#FCEBEB;
+    --color-text-primary:#1d1c1a;
+    --color-text-secondary:#5f5e5a;
+    --color-text-tertiary:#88877f;
+    --color-text-info:#185FA5;
+    --color-text-success:#0F6E56;
+    --color-text-warning:#854F0B;
+    --color-text-danger:#A32D2D;
+    --color-border-tertiary:rgba(0,0,0,0.12);
+    --color-border-secondary:rgba(0,0,0,0.22);
+    --color-border-info:#378ADD;
+    --color-border-success:#5DCAA5;
+    --color-border-warning:#EF9F27;
+    --color-border-danger:#F09595;
+    --border-radius-md:8px;
+    --border-radius-lg:12px;
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --color-background-primary:#26251f;
+      --color-background-secondary:#1d1c17;
+      --color-background-tertiary:#161510;
+      --color-background-info:#0C447C;
+      --color-background-success:#085041;
+      --color-background-warning:#633806;
+      --color-background-danger:#791F1F;
+      --color-text-primary:#f1efe8;
+      --color-text-secondary:#b4b2a9;
+      --color-text-tertiary:#888780;
+      --color-text-info:#85B7EB;
+      --color-text-success:#5DCAA5;
+      --color-text-warning:#FAC775;
+      --color-text-danger:#F09595;
+      --color-border-tertiary:rgba(255,255,255,0.14);
+      --color-border-secondary:rgba(255,255,255,0.26);
+    }
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--color-background-tertiary); color:var(--color-text-primary); font-family:var(--font-sans); line-height:1.6; padding:32px 16px;}
+  .wrap{max-width:760px; margin:0 auto;}
+  header.page{margin-bottom:20px;}
+  header.page h1{font-size:22px; font-weight:500; margin:0 0 6px;}
+  header.page p{font-size:14px; color:var(--color-text-secondary); margin:0;}
+  button{font-family:inherit; font-size:14px; padding:8px 12px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-primary); cursor:pointer; transition:background .12s;}
+  button:hover{background:var(--color-background-secondary);}
+  button:active{transform:scale(0.98);}
+  a{color:var(--color-text-info);}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  .tag{font-size:12px; padding:3px 10px; border-radius:99px; background:var(--color-background-secondary);}
+  .tag.c-teal{background:#E1F5EE; color:#0F6E56;}
+  .dot{width:8px;height:8px;border-radius:50%; display:inline-block;}
+  .scout{display:flex; flex-direction:column; gap:3px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:9px 11px; font-size:13px;}
+  .scout i{font-size:16px; color:var(--color-text-secondary);}
+  .scout span{font-size:12px; color:var(--color-text-secondary);}
+  .scout b{font-size:12px; font-weight:500;}
+  .scout b.c-teal{color:#0F6E56;} .scout b.c-amber{color:#854F0B;}
+  .log{display:flex; align-items:center; gap:8px; font-size:13px; padding:4px 0;}
+  .log i{font-size:15px;} .log i.c-teal{color:#0F6E56;} .log i.c-amber{color:#854F0B;}
+  .frame[hidden]{display:none;}
+  #steps button[aria-pressed="true"]{background:var(--color-background-secondary); border-color:var(--color-border-secondary);}
+  table{border-collapse:collapse;}
+  ul{margin:0;}
+  @media print{ body{background:#fff;} .frame[hidden]{display:block !important;} #steps{display:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="page">
+  <h1>Autonomous procurement UX</h1>
+  <p>Non-human-present agentic commerce — runs inside Claude / ChatGPT. Click the four states to walk the flow.</p>
+</header>
+
+<div style="background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem;">
+<h2 class="sr-only">A four-state mockup of an autonomous, no-human-present shopping agent: setting a spending mandate, sub-agent orchestration, an async approval-on-exception card, and the settled receipt.</h2>
+
+<div id="steps" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;">
+  <button data-go="0" style="flex:1; min-width:120px;"><i class="ti ti-shield-check" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>1 · Mandate</button>
+  <button data-go="1" style="flex:1; min-width:120px;"><i class="ti ti-share" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>2 · Run</button>
+  <button data-go="2" style="flex:1; min-width:120px;"><i class="ti ti-bell" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>3 · Approval</button>
+  <button data-go="3" style="flex:1; min-width:120px;"><i class="ti ti-receipt" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>4 · Receipt</button>
+</div>
+
+<div style="background: var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow:hidden;">
+  <div style="display:flex; align-items:center; gap:8px; padding:10px 14px; border-bottom:0.5px solid var(--color-border-tertiary);">
+    <div style="width:22px;height:22px;border-radius:50%;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;color:var(--color-text-info);font-size:13px;"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+    <span style="font-size:13px; color:var(--color-text-secondary);">Procurement agent · runs in Claude / ChatGPT · no one watching</span>
+  </div>
+
+  <div style="padding:14px 16px;">
+
+  <div class="frame" data-step="0">
+    <p style="font-size:14px; margin:0 0 12px; color:var(--color-text-secondary);"><i class="ti ti-user" aria-hidden="true" style="margin-right:6px;"></i>"Keep the office stocked with coffee — handle it without me."</p>
+    <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+        <i class="ti ti-shield-check" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
+        <span style="font-size:15px; font-weight:500;">Authorize an autonomous run</span>
+        <span style="margin-left:auto; font-size:11px; padding:2px 8px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); color:var(--color-text-secondary);">AP2 mandate</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-bottom:14px;">
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Spend cap / run</div><div style="font-size:18px; font-weight:500;">$120.00</div></div>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Pay from</div><div style="font-size:14px; font-weight:500;">Session wallet <span style="color:var(--color-text-secondary);">· x402·Hedera</span></div></div>
+      </div>
+      <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Allowed</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;">
+        <span class="tag c-teal">Grocery · coffee</span><span class="tag c-teal">Filters</span><span class="tag c-teal">Rating ≥ 4.0★</span>
+      </div>
+      <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;"><i class="ti ti-bell" aria-hidden="true" style="margin-right:4px;"></i>Interrupt me only when</div>
+      <ul style="margin:0 0 14px; padding-left:18px; font-size:13px; line-height:1.9;">
+        <li>a pick would push the run <strong>over $120</strong></li>
+        <li>unit price is <strong>&gt;15% above</strong> the usual</li>
+        <li>the only match is <strong>age- or eligibility-restricted</strong></li>
+      </ul>
+      <button style="width:100%; border-color:var(--color-border-info); color:var(--color-text-info);"><i class="ti ti-lock" aria-hidden="true" style="margin-right:6px;"></i>Authorize &amp; leave</button>
+      <p style="font-size:11px; color:var(--color-text-tertiary); text-align:center; margin:8px 0 0;">Signed server-side · re-derived from cart on every payment path</p>
+    </div>
+  </div>
+
+  <div class="frame" data-step="1" hidden>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <span class="dot" style="background:var(--color-text-success);"></span>
+      <span style="font-size:14px; font-weight:500;">Run in progress</span>
+      <span style="font-size:12px; color:var(--color-text-secondary);">· nobody present · within mandate</span>
+      <span style="margin-left:auto; font-size:12px; color:var(--color-text-secondary);">$74 / $120</span>
+    </div>
+    <div style="height:6px; background:var(--color-background-secondary); border-radius:99px; margin-bottom:14px; overflow:hidden;"><div style="width:62%; height:100%; background:var(--color-text-success);"></div></div>
+
+    <div style="display:flex; align-items:center; gap:8px; padding:8px 0; margin-bottom:6px;">
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;color:var(--color-text-info);"><i class="ti ti-hierarchy-2" aria-hidden="true"></i></div>
+      <div><div style="font-size:14px; font-weight:500;">Lead agent</div><div style="font-size:12px; color:var(--color-text-secondary);">dispatched 4 scouts · ranking against mandate</div></div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin:6px 0 14px;">
+      <div class="scout"><i class="ti ti-building-store" aria-hidden="true"></i><span>Marketplace A</span><b class="c-teal">12 found</b></div>
+      <div class="scout"><i class="ti ti-building-store" aria-hidden="true"></i><span>Marketplace B</span><b class="c-teal">8 found</b></div>
+      <div class="scout"><i class="ti ti-star" aria-hidden="true"></i><span>Reviews &amp; quality</span><b class="c-teal">scored</b></div>
+      <div class="scout"><i class="ti ti-discount" aria-hidden="true"></i><span>Price &amp; deals</span><b class="c-amber">working…</b></div>
+    </div>
+
+    <div style="border-top:0.5px solid var(--color-border-tertiary); padding-top:10px;">
+      <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Scouts returned 20 candidates across 2 marketplaces</span></div>
+      <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Dropped 6 below 4.0★, 3 out of stock</span></div>
+      <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Peet's Major Dickason 2× ($63)</b> + filters ($11)</span></div>
+      <div class="log"><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Deal scout checking a coupon before paying…</span></div>
+    </div>
+    <p style="font-size:11px; color:var(--color-text-tertiary); margin:12px 0 0;">This panel is a replayable audit log — the human reviews it later, not live.</p>
+  </div>
+
+  <div class="frame" data-step="2" hidden>
+    <div style="background:var(--color-background-warning); border:0.5px solid var(--color-border-warning); border-radius:var(--border-radius-md); padding:8px 12px; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+      <i class="ti ti-player-pause" aria-hidden="true" style="color:var(--color-text-warning);"></i>
+      <span style="font-size:13px; color:var(--color-text-warning); font-weight:500;">Run paused — surfaced in-app</span>
+      <span style="margin-left:auto; font-size:11px; color:var(--color-text-warning);"><i class="ti ti-bell" aria-hidden="true"></i> unread badge</span>
+    </div>
+    <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
+      <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">Tripped a guardrail you set</div>
+      <div style="font-size:15px; font-weight:500; margin-bottom:12px;">Best in-stock filter is 18% over your unit-price cap</div>
+      <div style="display:flex; gap:12px; align-items:center; background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px; margin-bottom:14px;">
+        <div style="width:40px;height:40px;border-radius:var(--border-radius-md); background:var(--color-background-info); display:flex; align-items:center; justify-content:center; color:var(--color-text-info);"><i class="ti ti-coffee" aria-hidden="true"></i></div>
+        <div style="flex:1;"><div style="font-size:14px; font-weight:500;">Melitta #4 filters · 200ct</div><div style="font-size:12px; color:var(--color-text-secondary);">4.6★ · only seller in stock</div></div>
+        <div style="text-align:right;"><div style="font-size:15px; font-weight:500; color:var(--color-text-warning);">$13.00</div><div style="font-size:11px; color:var(--color-text-tertiary); text-decoration:line-through;">cap $11</div></div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button style="flex:1; min-width:120px; border-color:var(--color-border-success); color:var(--color-text-success);"><i class="ti ti-check" aria-hidden="true" style="margin-right:4px;"></i>Approve once</button>
+        <button style="flex:1; min-width:120px;"><i class="ti ti-adjustments" aria-hidden="true" style="margin-right:4px;"></i>Raise cap</button>
+        <button style="flex:1; min-width:120px; border-color:var(--color-border-danger); color:var(--color-text-danger);"><i class="ti ti-x" aria-hidden="true" style="margin-right:4px;"></i>Skip it</button>
+      </div>
+      <p style="font-size:11px; color:var(--color-text-tertiary); text-align:center; margin:10px 0 0;">Answer whenever — the run holds. No reply in 24h → auto-skips per your default.</p>
+    </div>
+  </div>
+
+  <div class="frame" data-step="3" hidden>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+      <i class="ti ti-circle-check" aria-hidden="true" style="font-size:20px; color:var(--color-text-success);"></i>
+      <span style="font-size:15px; font-weight:500;">Autonomous purchase complete</span>
+    </div>
+    <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
+      <table style="width:100%; font-size:13px;">
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Order</td><td style="text-align:right; padding:5px 0; font-family:var(--font-mono);">ord_9F3A21</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Total</td><td style="text-align:right; padding:5px 0; font-weight:500;">$74.00</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Paid via</td><td style="text-align:right; padding:5px 0;">x402 · session wallet</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Settled</td><td style="text-align:right; padding:5px 0;">74 ℏ · Hedera · in 2.1s</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Approvals</td><td style="text-align:right; padding:5px 0;">1 (filter cap, approved)</td></tr>
+      </table>
+      <a href="#" onclick="return false" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; margin-top:10px; color:var(--color-text-info);"><i class="ti ti-external-link" aria-hidden="true"></i>View public proof on HashScan</a>
+      <div style="border-top:0.5px solid var(--color-border-tertiary); margin-top:12px; padding-top:10px;">
+        <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Audit trail</div>
+        <div class="log"><i class="ti ti-shield-check c-teal" aria-hidden="true"></i><span>Mandate authorized · $120 cap</span></div>
+        <div class="log"><i class="ti ti-share c-teal" aria-hidden="true"></i><span>4 scouts → 20 candidates → 2 items picked</span></div>
+        <div class="log"><i class="ti ti-bell c-teal" aria-hidden="true"></i><span>1 exception raised &amp; resolved by you</span></div>
+        <div class="log"><i class="ti ti-coin c-teal" aria-hidden="true"></i><span>Gates re-checked · paid · cart cleared</span></div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+<p style="font-size:12px; color:var(--color-text-tertiary); margin-top:16px;">Mockup for the <code>2026-06-16-autonomous-procurement-ux</code> design. States: mandate → run → approval-on-exception → receipt.</p>
+</div>
+
+<script>
+(function(){
+  var frames=document.querySelectorAll('.frame');
+  var btns=document.querySelectorAll('#steps button');
+  function go(n){frames.forEach(function(f){f.hidden=(+f.dataset.step!==n);});btns.forEach(function(b){b.setAttribute('aria-pressed',(+b.dataset.go===n)?'true':'false');});}
+  btns.forEach(function(b){b.addEventListener('click',function(){go(+b.dataset.go);});});
+  go(0);
+})();
+</script>
+</body>
+</html>
