@@ -65,6 +65,7 @@
   .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
   .tag{font-size:12px; padding:3px 10px; border-radius:99px; background:var(--color-background-secondary);}
   .tag.c-teal{background:#E1F5EE; color:#0F6E56;}
+  .tag.c-amber{background:#FAEEDA; color:#854F0B;}
   .dot{width:8px;height:8px;border-radius:50%; display:inline-block;}
   .scout{display:flex; flex-direction:column; gap:3px; background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:9px 11px; font-size:13px;}
   .scout i{font-size:16px; color:var(--color-text-secondary);}
@@ -73,28 +74,57 @@
   .scout b.c-teal{color:#0F6E56;} .scout b.c-amber{color:#854F0B;}
   .log{display:flex; align-items:center; gap:8px; font-size:13px; padding:4px 0;}
   .log i{font-size:15px;} .log i.c-teal{color:#0F6E56;} .log i.c-amber{color:#854F0B;}
-  .frame[hidden]{display:none;}
+  .frame[hidden], [data-scn][hidden]{display:none;}
+  #scenario button[aria-pressed="true"]{background:var(--color-background-primary); border-color:var(--color-border-secondary); font-weight:500;}
   #steps button[aria-pressed="true"]{background:var(--color-background-secondary); border-color:var(--color-border-secondary);}
+  /* Q&A chat bubbles for the clarify step */
+  .qa{display:flex; flex-direction:column; gap:8px; margin-bottom:12px;}
+  .qa .q, .qa .a{font-size:13px; padding:7px 11px; border-radius:var(--border-radius-md); max-width:85%;}
+  .qa .q{align-self:flex-start; background:var(--color-background-info); color:var(--color-text-info);}
+  .qa .a{align-self:flex-end; background:var(--color-background-secondary);}
+  /* mocked external-browser chrome for the authorize step */
+  .browser{border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-lg); overflow:hidden; background:var(--color-background-primary);}
+  .browser .chrome{display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--color-background-tertiary); border-bottom:0.5px solid var(--color-border-tertiary);}
+  .browser .chrome .dots{display:flex; gap:5px;}
+  .browser .chrome .dots span{width:9px;height:9px;border-radius:50%; background:var(--color-border-secondary);}
+  .browser .chrome .url{flex:1; display:flex; align-items:center; gap:6px; font-size:12px; color:var(--color-text-secondary); background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:99px; padding:4px 10px; font-family:var(--font-mono);}
+  .mandate-card{border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:12px 14px; margin-bottom:10px;}
+  .mandate-card .mc-head{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
+  .mandate-card .mc-head i{font-size:17px;}
+  .mandate-card .mc-head b{font-size:14px; font-weight:500;}
+  .mandate-card .mc-head .badge{margin-left:auto; font-size:10px; text-transform:uppercase; letter-spacing:.04em; padding:2px 7px; border-radius:99px; background:var(--color-background-secondary); color:var(--color-text-secondary);}
+  .mandate-card table{width:100%; font-size:12.5px;}
+  .mandate-card td{padding:3px 0; vertical-align:top;}
+  .mandate-card td:first-child{color:var(--color-text-secondary); padding-right:12px; white-space:nowrap;}
+  .mandate-card td:last-child{text-align:right; font-family:var(--font-mono);}
   table{border-collapse:collapse;}
   ul{margin:0;}
-  @media print{ body{background:#fff;} .frame[hidden]{display:block !important;} #steps{display:none !important;} }
+  @media print{ body{background:#fff;} .frame[hidden]{display:block !important;} [data-scn][hidden]{display:none !important;} #steps, #scenario{display:none !important;} }
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="page">
   <h1>Autonomous procurement UX</h1>
-  <p>Non-human-present agentic commerce — runs inside Claude / ChatGPT. Click the four states to walk the flow.</p>
+  <p>Non-human-present agentic commerce — surfaces automatically inside Claude / ChatGPT. Pick a scenario, then walk the six states.</p>
 </header>
 
 <div style="background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1rem;">
-<h2 class="sr-only">A four-state mockup of an autonomous, non-human-present shopping agent: setting a spending mandate, sub-agent orchestration, an async approval-on-exception card, and the settled receipt.</h2>
+<h2 class="sr-only">A non-human-present shopping agent: it clarifies the request, sets a spending mandate, authorizes via an external Hedera browser flow that splits Intent and Payment mandates, runs sub-agents, raises an async approval-on-exception, and settles. Two scenarios: coffee (no age check) and alcohol (age verification up front).</h2>
+
+<!-- scenario toggle -->
+<div id="scenario" style="display:flex; gap:6px; margin-bottom:10px;">
+  <button data-scn="coffee" style="flex:1;"><i class="ti ti-coffee" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>Coffee · no age check</button>
+  <button data-scn="alcohol" style="flex:1;"><i class="ti ti-bottle" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>Alcohol · age verified</button>
+</div>
 
 <div id="steps" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;">
-  <button data-go="0" style="flex:1; min-width:120px;"><i class="ti ti-shield-check" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>1 · Mandate</button>
-  <button data-go="1" style="flex:1; min-width:120px;"><i class="ti ti-share" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>2 · Run</button>
-  <button data-go="2" style="flex:1; min-width:120px;"><i class="ti ti-bell" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>3 · Approval</button>
-  <button data-go="3" style="flex:1; min-width:120px;"><i class="ti ti-receipt" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>4 · Receipt</button>
+  <button data-go="0" style="flex:1; min-width:100px;"><i class="ti ti-messages" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>1 · Clarify</button>
+  <button data-go="1" style="flex:1; min-width:100px;"><i class="ti ti-shield-check" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>2 · Mandate</button>
+  <button data-go="2" style="flex:1; min-width:100px;"><i class="ti ti-lock" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>3 · Authorize</button>
+  <button data-go="3" style="flex:1; min-width:100px;"><i class="ti ti-share" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>4 · Run</button>
+  <button data-go="4" style="flex:1; min-width:100px;"><i class="ti ti-bell" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>5 · Approval</button>
+  <button data-go="5" style="flex:1; min-width:100px;"><i class="ti ti-receipt" aria-hidden="true" style="font-size:16px; vertical-align:-2px; margin-right:6px;"></i>6 · Receipt</button>
 </div>
 
 <div style="background: var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow:hidden;">
@@ -105,8 +135,82 @@
 
   <div style="padding:14px 16px;">
 
+  <!-- ============ STEP 1 · CLARIFY ============ -->
   <div class="frame" data-step="0">
-    <p style="font-size:14px; margin:0 0 12px; color:var(--color-text-secondary);"><i class="ti ti-user" aria-hidden="true" style="margin-right:6px;"></i>"Keep the office stocked with coffee — handle it without me."</p>
+
+    <!-- COFFEE -->
+    <div data-scn="coffee">
+      <p style="font-size:14px; margin:0 0 12px; color:var(--color-text-secondary);"><i class="ti ti-user" aria-hidden="true" style="margin-right:6px;"></i>"Keep the office stocked with coffee — handle it without me."</p>
+      <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <i class="ti ti-messages" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
+          <span style="font-size:15px; font-weight:500;">Agent clarifies before acting</span>
+          <span style="margin-left:auto; font-size:11px; padding:2px 8px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); color:var(--color-text-secondary);">no age check</span>
+        </div>
+        <div class="qa">
+          <div class="q">How many bags should I order this run?</div>
+          <div class="a">2 bags</div>
+          <div class="q">Want milk or water for the machine too?</div>
+          <div class="a">Add milk — skip water</div>
+        </div>
+        <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Confirmed order</div>
+        <ul style="margin:0 0 12px; padding-left:18px; font-size:13px; line-height:1.9;">
+          <li>2× whole-bean coffee · rating ≥ 4.0★</li>
+          <li>1× pack of filters</li>
+          <li>1× milk (2%)</li>
+        </ul>
+        <button data-go="1" style="width:100%; border-color:var(--color-border-info); color:var(--color-text-info);"><i class="ti ti-check" aria-hidden="true" style="margin-right:6px;"></i>Looks right — set the mandate</button>
+      </div>
+    </div>
+
+    <!-- ALCOHOL -->
+    <div data-scn="alcohol" hidden>
+      <p style="font-size:14px; margin:0 0 12px; color:var(--color-text-secondary);"><i class="ti ti-user" aria-hidden="true" style="margin-right:6px;"></i>"Restock the office bar with beer for Friday — handle it without me."</p>
+
+      <div style="background:var(--color-background-warning); border:0.5px solid var(--color-border-warning); border-radius:var(--border-radius-md); padding:8px 12px; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+        <i class="ti ti-id-badge-2" aria-hidden="true" style="color:var(--color-text-warning);"></i>
+        <span style="font-size:13px; color:var(--color-text-warning); font-weight:500;">Age-restricted — verify identity up front, before any run</span>
+      </div>
+
+      <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <i class="ti ti-id" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
+          <span style="font-size:15px; font-weight:500;">Step 1 — provide your credentials</span>
+          <span style="margin-left:auto; font-size:11px; padding:2px 8px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); color:var(--color-text-secondary);">collected once</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px;">
+          <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Legal name</div><div style="font-size:14px; font-weight:500;">A. Buyer</div></div>
+          <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Date of birth</div><div style="font-size:14px; font-weight:500;">1990-04-12 <span style="color:var(--color-text-success);">· 21+</span></div></div>
+          <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Government ID</div><div style="font-size:14px; font-weight:500;"><i class="ti ti-circle-check" aria-hidden="true" style="color:var(--color-text-success); margin-right:4px;"></i>Provided</div></div>
+          <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Delivery state</div><div style="font-size:14px; font-weight:500;">CA · ships alcohol</div></div>
+        </div>
+        <p style="font-size:11px; color:var(--color-text-tertiary); margin:10px 0 0;">Bound to the mandate now so no human is needed at delivery handoff.</p>
+      </div>
+
+      <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <i class="ti ti-messages" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
+          <span style="font-size:15px; font-weight:500;">Then the agent clarifies the order</span>
+        </div>
+        <div class="qa">
+          <div class="q">Beer or wine — and how many?</div>
+          <div class="a">A case of beer, IPA if you can</div>
+          <div class="q">Want sparkling water alongside it?</div>
+          <div class="a">Yes, one 12-pack</div>
+        </div>
+        <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Confirmed order</div>
+        <ul style="margin:0 0 12px; padding-left:18px; font-size:13px; line-height:1.9;">
+          <li>1× case IPA · 24ct · rating ≥ 4.0★ <span class="tag c-amber" style="margin-left:4px;">age-gated</span></li>
+          <li>1× 12-pack sparkling water</li>
+        </ul>
+        <button data-go="1" style="width:100%; border-color:var(--color-border-info); color:var(--color-text-info);"><i class="ti ti-check" aria-hidden="true" style="margin-right:6px;"></i>Looks right — set the mandate</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ STEP 2 · MANDATE ============ -->
+  <div class="frame" data-step="1" hidden>
     <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
       <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
         <i class="ti ti-shield-check" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
@@ -114,30 +218,110 @@
         <span style="margin-left:auto; font-size:11px; padding:2px 8px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); color:var(--color-text-secondary);">AP2 mandate</span>
       </div>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-bottom:14px;">
-        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Spend cap / run</div><div style="font-size:18px; font-weight:500;">$120.00</div></div>
+        <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Spend cap / run</div><div style="font-size:18px; font-weight:500;"><span data-scn="coffee">$120.00</span><span data-scn="alcohol" hidden>$90.00</span></div></div>
         <div style="background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px;"><div style="font-size:12px; color:var(--color-text-secondary);">Pay from</div><div style="font-size:14px; font-weight:500;">Session wallet <span style="color:var(--color-text-secondary);">· x402·Hedera</span></div></div>
       </div>
       <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Allowed</div>
       <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;">
-        <span class="tag c-teal">Grocery · coffee</span><span class="tag c-teal">Filters</span><span class="tag c-teal">Rating ≥ 4.0★</span>
+        <span data-scn="coffee" class="tag c-teal">Grocery · coffee</span>
+        <span data-scn="coffee" class="tag c-teal">Filters</span>
+        <span data-scn="alcohol" class="tag c-teal" hidden>Licensed retailers · beer</span>
+        <span data-scn="alcohol" class="tag c-amber" hidden><i class="ti ti-id-badge-2" aria-hidden="true" style="margin-right:3px; vertical-align:-1px;"></i>Age 21+ gate</span>
+        <span class="tag c-teal">Rating ≥ 4.0★</span>
       </div>
       <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;"><i class="ti ti-bell" aria-hidden="true" style="margin-right:4px;"></i>Interrupt me only when</div>
       <ul style="margin:0 0 14px; padding-left:18px; font-size:13px; line-height:1.9;">
-        <li>a pick would push the run <strong>over $120</strong></li>
+        <li>a pick would push the run <strong>over the cap</strong></li>
         <li>unit price is <strong>&gt;15% above</strong> the usual</li>
-        <li>the only match is <strong>age- or eligibility-restricted</strong></li>
+        <li data-scn="coffee">the only match is <strong>age- or eligibility-restricted</strong></li>
+        <li data-scn="alcohol" hidden>a retailer <strong>can't ship alcohol</strong> to the delivery state</li>
       </ul>
-      <button style="width:100%; border-color:var(--color-border-info); color:var(--color-text-info);"><i class="ti ti-lock" aria-hidden="true" style="margin-right:6px;"></i>Authorize &amp; leave</button>
-      <p style="font-size:11px; color:var(--color-text-tertiary); text-align:center; margin:8px 0 0;">Signed server-side · re-derived from cart on every payment path</p>
+      <button data-go="2" style="width:100%; border-color:var(--color-border-info); color:var(--color-text-info);"><i class="ti ti-external-link" aria-hidden="true" style="margin-right:6px;"></i>Authorize</button>
+      <p style="font-size:11px; color:var(--color-text-tertiary); text-align:center; margin:8px 0 0;">Opens an external browser (mobile &amp; desktop) to collect credentials &amp; sign · re-derived from cart on every payment path</p>
     </div>
   </div>
 
-  <div class="frame" data-step="1" hidden>
+  <!-- ============ STEP 3 · AUTHORIZE (external browser) ============ -->
+  <div class="frame" data-step="2" hidden>
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <i class="ti ti-external-link" aria-hidden="true" style="font-size:16px; color:var(--color-text-info);"></i>
+      <span style="font-size:13px; color:var(--color-text-secondary);">Opened in your browser — Hedera credential &amp; mandate flow</span>
+    </div>
+    <div class="browser">
+      <div class="chrome">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="url"><i class="ti ti-lock" aria-hidden="true" style="font-size:12px;"></i>pay.hedera.network/authorize</div>
+      </div>
+      <div style="padding:16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <i class="ti ti-shield-check" aria-hidden="true" style="font-size:18px; color:var(--color-text-info);"></i>
+          <span style="font-size:15px; font-weight:500;">Review &amp; sign — AP2 mandates</span>
+          <span style="margin-left:auto; font-size:11px; padding:2px 8px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); color:var(--color-text-secondary);">two distinct mandates</span>
+        </div>
+
+        <!-- Intent mandate -->
+        <div class="mandate-card">
+          <div class="mc-head">
+            <i class="ti ti-target-arrow" aria-hidden="true" style="color:var(--color-text-info);"></i>
+            <b>Intent Mandate</b>
+            <span class="badge">what may be bought</span>
+          </div>
+          <table>
+            <tr><td>Goal</td><td><span data-scn="coffee">Restock office coffee</span><span data-scn="alcohol" hidden>Restock office bar · beer</span></td></tr>
+            <tr><td>Allowed</td><td><span data-scn="coffee">grocery · coffee · filters</span><span data-scn="alcohol" hidden>licensed retailers · beer</span></td></tr>
+            <tr><td>Spend cap</td><td><span data-scn="coffee">$120.00 / run</span><span data-scn="alcohol" hidden>$90.00 / run</span></td></tr>
+            <tr><td>Constraints</td><td><span data-scn="coffee">rating ≥ 4.0★</span><span data-scn="alcohol" hidden>rating ≥ 4.0★ · ships to CA</span></td></tr>
+            <tr><td>Expiry</td><td>30 days</td></tr>
+          </table>
+        </div>
+
+        <!-- Identity / age credential — alcohol only -->
+        <div class="mandate-card" data-scn="alcohol" hidden style="background:var(--color-background-warning); border-color:var(--color-border-warning);">
+          <div class="mc-head">
+            <i class="ti ti-id-badge-2" aria-hidden="true" style="color:var(--color-text-warning);"></i>
+            <b>Age / Identity credential</b>
+            <span class="badge">eligibility</span>
+          </div>
+          <table>
+            <tr><td>Holder</td><td>A. Buyer</td></tr>
+            <tr><td>Age check</td><td>21+ · verified</td></tr>
+            <tr><td>ID proof</td><td>gov-ID · hardware-backed</td></tr>
+          </table>
+        </div>
+
+        <!-- Payment mandate -->
+        <div class="mandate-card" style="margin-bottom:14px;">
+          <div class="mc-head">
+            <i class="ti ti-credit-card" aria-hidden="true" style="color:var(--color-text-success);"></i>
+            <b>Payment Mandate</b>
+            <span class="badge">how it settles</span>
+          </div>
+          <table>
+            <tr><td>Method</td><td>x402 · session wallet</td></tr>
+            <tr><td>Rail</td><td>Hedera · USDC</td></tr>
+            <tr><td>Max charge</td><td><span data-scn="coffee">$120.00</span><span data-scn="alcohol" hidden>$90.00</span></td></tr>
+            <tr><td>Bound to</td><td>Intent Mandate hash</td></tr>
+            <tr><td>Audit</td><td>HCS topic · on-chain</td></tr>
+          </table>
+        </div>
+
+        <button data-go="3" style="width:100%; border-color:var(--color-border-success); color:var(--color-text-success);"><i class="ti ti-signature" aria-hidden="true" style="margin-right:6px;"></i>Sign &amp; return to run</button>
+        <p style="font-size:11px; color:var(--color-text-tertiary); text-align:center; margin:8px 0 0;">Hardware-backed signature · you'll return to the run screen in the app</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 4 · RUN ============ -->
+  <div class="frame" data-step="3" hidden>
+    <div style="background:var(--color-background-success); border:0.5px solid var(--color-border-success); border-radius:var(--border-radius-md); padding:7px 11px; display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <i class="ti ti-circle-check" aria-hidden="true" style="color:var(--color-text-success);"></i>
+      <span style="font-size:12.5px; color:var(--color-text-success);">Authorized in browser — back on the run screen</span>
+    </div>
     <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
       <span class="dot" style="background:var(--color-text-success);"></span>
       <span style="font-size:14px; font-weight:500;">Run in progress</span>
       <span style="font-size:12px; color:var(--color-text-secondary);">· nobody present · within mandate</span>
-      <span style="margin-left:auto; font-size:12px; color:var(--color-text-secondary);">$74 / $120</span>
+      <span style="margin-left:auto; font-size:12px; color:var(--color-text-secondary);"><span data-scn="coffee">$74 / $120</span><span data-scn="alcohol" hidden>$58 / $90</span></span>
     </div>
     <div style="height:6px; background:var(--color-background-secondary); border-radius:99px; margin-bottom:14px; overflow:hidden;"><div style="width:62%; height:100%; background:var(--color-text-success);"></div></div>
 
@@ -150,19 +334,24 @@
       <div class="scout"><i class="ti ti-building-store" aria-hidden="true"></i><span>Marketplace A</span><b class="c-teal">12 found</b></div>
       <div class="scout"><i class="ti ti-building-store" aria-hidden="true"></i><span>Marketplace B</span><b class="c-teal">8 found</b></div>
       <div class="scout"><i class="ti ti-star" aria-hidden="true"></i><span>Reviews &amp; quality</span><b class="c-teal">scored</b></div>
-      <div class="scout"><i class="ti ti-discount" aria-hidden="true"></i><span>Price &amp; deals</span><b class="c-amber">working…</b></div>
+      <div class="scout" data-scn="coffee"><i class="ti ti-discount" aria-hidden="true"></i><span>Price &amp; deals</span><b class="c-amber">working…</b></div>
+      <div class="scout" data-scn="alcohol" hidden><i class="ti ti-id-badge-2" aria-hidden="true"></i><span>Age &amp; ship-to gate</span><b class="c-teal">passed</b></div>
     </div>
 
     <div style="border-top:0.5px solid var(--color-border-tertiary); padding-top:10px;">
       <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Scouts returned 20 candidates across 2 marketplaces</span></div>
       <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Dropped 6 below 4.0★, 3 out of stock</span></div>
-      <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Peet's Major Dickason 2× ($63)</b> + filters ($11)</span></div>
-      <div class="log"><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Deal scout checking a coupon before paying…</span></div>
+      <div class="log" data-scn="coffee"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Peet's Major Dickason 2× ($63)</b> + filters ($11)</span></div>
+      <div class="log" data-scn="coffee"><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Deal scout checking a coupon before paying…</span></div>
+      <div class="log" data-scn="alcohol" hidden><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Dropped 4 retailers that can't ship alcohol to CA</span></div>
+      <div class="log" data-scn="alcohol" hidden><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Local IPA case ($46)</b> + sparkling water ($12)</span></div>
+      <div class="log" data-scn="alcohol" hidden><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Confirming 21+ signature-on-delivery before paying…</span></div>
     </div>
     <p style="font-size:11px; color:var(--color-text-tertiary); margin:12px 0 0;">This panel is a replayable audit log — the human reviews it later, not live.</p>
   </div>
 
-  <div class="frame" data-step="2" hidden>
+  <!-- ============ STEP 5 · APPROVAL ============ -->
+  <div class="frame" data-step="4" hidden>
     <div style="background:var(--color-background-warning); border:0.5px solid var(--color-border-warning); border-radius:var(--border-radius-md); padding:8px 12px; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
       <i class="ti ti-player-pause" aria-hidden="true" style="color:var(--color-text-warning);"></i>
       <span style="font-size:13px; color:var(--color-text-warning); font-weight:500;">Run paused — surfaced in-app</span>
@@ -170,11 +359,14 @@
     </div>
     <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
       <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">Tripped a guardrail you set</div>
-      <div style="font-size:15px; font-weight:500; margin-bottom:12px;">Best in-stock filter is 18% over your unit-price cap</div>
+      <div style="font-size:15px; font-weight:500; margin-bottom:12px;"><span data-scn="coffee">Best in-stock filter is 18% over your unit-price cap</span><span data-scn="alcohol" hidden>Best in-stock IPA case is 16% over your unit-price cap</span></div>
       <div style="display:flex; gap:12px; align-items:center; background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px; margin-bottom:14px;">
-        <div style="width:40px;height:40px;border-radius:var(--border-radius-md); background:var(--color-background-info); display:flex; align-items:center; justify-content:center; color:var(--color-text-info);"><i class="ti ti-coffee" aria-hidden="true"></i></div>
-        <div style="flex:1;"><div style="font-size:14px; font-weight:500;">Melitta #4 filters · 200ct</div><div style="font-size:12px; color:var(--color-text-secondary);">4.6★ · only seller in stock</div></div>
-        <div style="text-align:right;"><div style="font-size:15px; font-weight:500; color:var(--color-text-warning);">$13.00</div><div style="font-size:11px; color:var(--color-text-tertiary); text-decoration:line-through;">cap $11</div></div>
+        <div style="width:40px;height:40px;border-radius:var(--border-radius-md); background:var(--color-background-info); display:flex; align-items:center; justify-content:center; color:var(--color-text-info);"><i class="ti ti-coffee" aria-hidden="true" data-scn="coffee"></i><i class="ti ti-bottle" aria-hidden="true" data-scn="alcohol" hidden></i></div>
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:500;"><span data-scn="coffee">Melitta #4 filters · 200ct</span><span data-scn="alcohol" hidden>Hazy IPA case · 24ct</span></div>
+          <div style="font-size:12px; color:var(--color-text-secondary);">4.6★ · only seller in stock</div>
+        </div>
+        <div style="text-align:right;"><div style="font-size:15px; font-weight:500; color:var(--color-text-warning);"><span data-scn="coffee">$13.00</span><span data-scn="alcohol" hidden>$52.00</span></div><div style="font-size:11px; color:var(--color-text-tertiary); text-decoration:line-through;"><span data-scn="coffee">cap $11</span><span data-scn="alcohol" hidden>cap $45</span></div></div>
       </div>
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
         <button style="flex:1; min-width:120px; border-color:var(--color-border-success); color:var(--color-text-success);"><i class="ti ti-check" aria-hidden="true" style="margin-right:4px;"></i>Approve once</button>
@@ -185,23 +377,26 @@
     </div>
   </div>
 
-  <div class="frame" data-step="3" hidden>
+  <!-- ============ STEP 6 · RECEIPT ============ -->
+  <div class="frame" data-step="5" hidden>
     <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
       <i class="ti ti-circle-check" aria-hidden="true" style="font-size:20px; color:var(--color-text-success);"></i>
       <span style="font-size:15px; font-weight:500;">Autonomous purchase complete</span>
     </div>
     <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
       <table style="width:100%; font-size:13px;">
-        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Order</td><td style="text-align:right; padding:5px 0; font-family:var(--font-mono);">ord_9F3A21</td></tr>
-        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Total</td><td style="text-align:right; padding:5px 0; font-weight:500;">$74.00</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Order</td><td style="text-align:right; padding:5px 0; font-family:var(--font-mono);"><span data-scn="coffee">ord_9F3A21</span><span data-scn="alcohol" hidden>ord_7C1B08</span></td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Total</td><td style="text-align:right; padding:5px 0; font-weight:500;"><span data-scn="coffee">$74.00</span><span data-scn="alcohol" hidden>$58.00</span></td></tr>
         <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Paid via</td><td style="text-align:right; padding:5px 0;">x402 · session wallet</td></tr>
-        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Settled</td><td style="text-align:right; padding:5px 0;">74 ℏ · Hedera · in 2.1s</td></tr>
-        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Approvals</td><td style="text-align:right; padding:5px 0;">1 (filter cap, approved)</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Settled</td><td style="text-align:right; padding:5px 0;"><span data-scn="coffee">74 ℏ</span><span data-scn="alcohol" hidden>58 ℏ</span> · Hedera · in 2.1s</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Approvals</td><td style="text-align:right; padding:5px 0;">1 (unit-price cap, approved)</td></tr>
       </table>
       <a href="#" onclick="return false" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; margin-top:10px; color:var(--color-text-info);"><i class="ti ti-external-link" aria-hidden="true"></i>View public proof on HashScan</a>
       <div style="border-top:0.5px solid var(--color-border-tertiary); margin-top:12px; padding-top:10px;">
         <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Audit trail</div>
-        <div class="log"><i class="ti ti-shield-check c-teal" aria-hidden="true"></i><span>Mandate authorized · $120 cap</span></div>
+        <div class="log"><i class="ti ti-messages c-teal" aria-hidden="true"></i><span>Request clarified &amp; order confirmed</span></div>
+        <div class="log" data-scn="alcohol" hidden><i class="ti ti-id-badge-2 c-teal" aria-hidden="true"></i><span>Age verified 21+ · credential bound up front</span></div>
+        <div class="log"><i class="ti ti-shield-check c-teal" aria-hidden="true"></i><span>Intent &amp; Payment mandates signed in browser</span></div>
         <div class="log"><i class="ti ti-share c-teal" aria-hidden="true"></i><span>4 scouts → 20 candidates → 2 items picked</span></div>
         <div class="log"><i class="ti ti-bell c-teal" aria-hidden="true"></i><span>1 exception raised &amp; resolved by you</span></div>
         <div class="log"><i class="ti ti-coin c-teal" aria-hidden="true"></i><span>Gates re-checked · paid · cart cleared</span></div>
@@ -213,15 +408,35 @@
 </div>
 </div>
 
-<p style="font-size:12px; color:var(--color-text-tertiary); margin-top:16px;">Mockup for the <code>2026-06-16-autonomous-procurement-ux</code> design. States: mandate → run → approval-on-exception → receipt.</p>
+<p style="font-size:12px; color:var(--color-text-tertiary); margin-top:16px;">Mockup for the <code>2026-06-16-autonomous-procurement-ux</code> design. States: clarify → mandate → authorize (external browser, AP2) → run → approval-on-exception → receipt. Scenarios: coffee (no age check) and alcohol (age verified up front).</p>
 </div>
 
 <script>
 (function(){
   var frames=document.querySelectorAll('.frame');
-  var btns=document.querySelectorAll('#steps button');
-  function go(n){frames.forEach(function(f){f.hidden=(+f.dataset.step!==n);});btns.forEach(function(b){b.setAttribute('aria-pressed',(+b.dataset.go===n)?'true':'false');});}
-  btns.forEach(function(b){b.addEventListener('click',function(){go(+b.dataset.go);});});
+  var stepBtns=document.querySelectorAll('#steps button');
+  var scnBtns=document.querySelectorAll('#scenario button');
+  var scenario='coffee';
+  var step=0;
+
+  function applyScenario(){
+    document.querySelectorAll('[data-scn]:not(#scenario > [data-scn])').forEach(function(el){
+      el.hidden=(el.dataset.scn!==scenario);
+    });
+    scnBtns.forEach(function(b){b.setAttribute('aria-pressed',(b.dataset.scn===scenario)?'true':'false');});
+  }
+  function go(n){
+    step=n;
+    frames.forEach(function(f){f.hidden=(+f.dataset.step!==n);});
+    stepBtns.forEach(function(b){b.setAttribute('aria-pressed',(+b.dataset.go===n)?'true':'false');});
+    applyScenario();
+  }
+  stepBtns.forEach(function(b){b.addEventListener('click',function(){go(+b.dataset.go);});});
+  // in-frame buttons that advance (data-go on non-step buttons)
+  document.querySelectorAll('.frame [data-go]').forEach(function(b){b.addEventListener('click',function(){go(+b.dataset.go);});});
+  scnBtns.forEach(function(b){b.addEventListener('click',function(){scenario=b.dataset.scn; go(step);});});
+
+  applyScenario();
   go(0);
 })();
 </script>
