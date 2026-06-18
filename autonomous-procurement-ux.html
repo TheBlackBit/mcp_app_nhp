@@ -341,11 +341,11 @@
     <div style="border-top:0.5px solid var(--color-border-tertiary); padding-top:10px;">
       <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Scouts returned 20 candidates across 2 marketplaces</span></div>
       <div class="log"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Dropped 6 below 4.0★, 3 out of stock</span></div>
-      <div class="log" data-scn="coffee"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Peet's Major Dickason 2× ($63)</b> + filters ($11)</span></div>
-      <div class="log" data-scn="coffee"><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Deal scout checking a coupon before paying…</span></div>
+      <div class="log" data-scn="coffee"><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Peet's Major Dickason 2× ($56)</b> + milk ($5)</span></div>
+      <div class="log" data-scn="coffee"><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Only in-stock filter is <b>$13</b> — 18% above the usual $11 → pausing for you</span></div>
       <div class="log" data-scn="alcohol" hidden><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Dropped 4 retailers that can't ship alcohol to CA</span></div>
-      <div class="log" data-scn="alcohol" hidden><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Local IPA case ($46)</b> + sparkling water ($12)</span></div>
-      <div class="log" data-scn="alcohol" hidden><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>Confirming 21+ signature-on-delivery before paying…</span></div>
+      <div class="log" data-scn="alcohol" hidden><i class="ti ti-check c-teal" aria-hidden="true"></i><span>Picked <b>Local IPA case ($52)</b> + sparkling water ($6)</span></div>
+      <div class="log" data-scn="alcohol" hidden><i class="ti ti-loader c-amber" aria-hidden="true"></i><span>IPA case is <b>$52</b> — 16% above the usual $45 → pausing for you</span></div>
     </div>
     <p style="font-size:11px; color:var(--color-text-tertiary); margin:12px 0 0;">This panel is a replayable audit log — the human reviews it later, not live.</p>
   </div>
@@ -359,14 +359,14 @@
     </div>
     <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
       <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">Tripped a guardrail you set</div>
-      <div style="font-size:15px; font-weight:500; margin-bottom:12px;"><span data-scn="coffee">Best in-stock filter is 18% over your unit-price cap</span><span data-scn="alcohol" hidden>Best in-stock IPA case is 16% over your unit-price cap</span></div>
+      <div style="font-size:15px; font-weight:500; margin-bottom:12px;"><span data-scn="coffee">Best in-stock filter is 18% above the usual price</span><span data-scn="alcohol" hidden>Best in-stock IPA case is 16% above the usual price</span></div>
       <div style="display:flex; gap:12px; align-items:center; background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px; margin-bottom:14px;">
         <div style="width:40px;height:40px;border-radius:var(--border-radius-md); background:var(--color-background-info); display:flex; align-items:center; justify-content:center; color:var(--color-text-info);"><i class="ti ti-coffee" aria-hidden="true" data-scn="coffee"></i><i class="ti ti-bottle" aria-hidden="true" data-scn="alcohol" hidden></i></div>
         <div style="flex:1;">
           <div style="font-size:14px; font-weight:500;"><span data-scn="coffee">Melitta #4 filters · 200ct</span><span data-scn="alcohol" hidden>Hazy IPA case · 24ct</span></div>
           <div style="font-size:12px; color:var(--color-text-secondary);">4.6★ · only seller in stock</div>
         </div>
-        <div style="text-align:right;"><div style="font-size:15px; font-weight:500; color:var(--color-text-warning);"><span data-scn="coffee">$13.00</span><span data-scn="alcohol" hidden>$52.00</span></div><div style="font-size:11px; color:var(--color-text-tertiary); text-decoration:line-through;"><span data-scn="coffee">cap $11</span><span data-scn="alcohol" hidden>cap $45</span></div></div>
+        <div style="text-align:right;"><div style="font-size:15px; font-weight:500; color:var(--color-text-warning);"><span data-scn="coffee">$13.00</span><span data-scn="alcohol" hidden>$52.00</span></div><div style="font-size:11px; color:var(--color-text-tertiary); text-decoration:line-through;"><span data-scn="coffee">usual $11</span><span data-scn="alcohol" hidden>usual $45</span></div></div>
       </div>
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
         <button style="flex:1; min-width:120px; border-color:var(--color-border-success); color:var(--color-text-success);"><i class="ti ti-check" aria-hidden="true" style="margin-right:4px;"></i>Approve once</button>
@@ -384,12 +384,24 @@
       <span style="font-size:15px; font-weight:500;">Autonomous purchase complete</span>
     </div>
     <div style="border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:14px 16px;">
-      <table style="width:100%; font-size:13px;">
+      <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:6px;">Items</div>
+      <table style="width:100%; font-size:13px; margin-bottom:10px;">
+        <tbody data-scn="coffee">
+          <tr><td style="padding:3px 0;">Peet's Major Dickason · 2×</td><td style="text-align:right; padding:3px 0; font-family:var(--font-mono);">$56.00</td></tr>
+          <tr><td style="padding:3px 0;">Milk (2%) · 1×</td><td style="text-align:right; padding:3px 0; font-family:var(--font-mono);">$5.00</td></tr>
+          <tr><td style="padding:3px 0;">Melitta #4 filters · 200ct <span style="color:var(--color-text-warning);">· approved exception</span></td><td style="text-align:right; padding:3px 0; font-family:var(--font-mono);">$13.00</td></tr>
+        </tbody>
+        <tbody data-scn="alcohol" hidden>
+          <tr><td style="padding:3px 0;">Local IPA case · 24ct <span style="color:var(--color-text-warning);">· approved exception</span></td><td style="text-align:right; padding:3px 0; font-family:var(--font-mono);">$52.00</td></tr>
+          <tr><td style="padding:3px 0;">Sparkling water · 12-pack</td><td style="text-align:right; padding:3px 0; font-family:var(--font-mono);">$6.00</td></tr>
+        </tbody>
+      </table>
+      <table style="width:100%; font-size:13px; border-top:0.5px solid var(--color-border-tertiary); padding-top:4px;">
         <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Order</td><td style="text-align:right; padding:5px 0; font-family:var(--font-mono);"><span data-scn="coffee">ord_9F3A21</span><span data-scn="alcohol" hidden>ord_7C1B08</span></td></tr>
         <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Total</td><td style="text-align:right; padding:5px 0; font-weight:500;"><span data-scn="coffee">$74.00</span><span data-scn="alcohol" hidden>$58.00</span></td></tr>
         <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Paid via</td><td style="text-align:right; padding:5px 0;">x402 · session wallet</td></tr>
         <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Settled</td><td style="text-align:right; padding:5px 0;"><span data-scn="coffee">74 ℏ</span><span data-scn="alcohol" hidden>58 ℏ</span> · Hedera · in 2.1s</td></tr>
-        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Approvals</td><td style="text-align:right; padding:5px 0;">1 (unit-price cap, approved)</td></tr>
+        <tr><td style="color:var(--color-text-secondary); padding:5px 0;">Approvals</td><td style="text-align:right; padding:5px 0;"><span data-scn="coffee">1 (filter price, approved)</span><span data-scn="alcohol" hidden>1 (IPA price, approved)</span></td></tr>
       </table>
       <a href="#" onclick="return false" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; margin-top:10px; color:var(--color-text-info);"><i class="ti ti-external-link" aria-hidden="true"></i>View public proof on HashScan</a>
       <div style="border-top:0.5px solid var(--color-border-tertiary); margin-top:12px; padding-top:10px;">
